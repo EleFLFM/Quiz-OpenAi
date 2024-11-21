@@ -66,6 +66,64 @@ class TestController extends Controller
         return view('test.show', compact('questions'));
     }
 
+
+
+    public function submit(Request $request, OpenAIService $openAIService)
+    {
+        // Capturar las respuestas del formulario
+        $responses = $request->input('responses');
+
+        // Convertir las respuestas en un formato procesable para OpenAI
+        $questionsAndAnswers = [];
+        foreach ($responses as $index => $response) {
+            $questionsAndAnswers[] = [
+                'question' => "Pregunta $index",
+                'answer' => $response,
+            ];
+        }
+
+        // Enviar las respuestas a OpenAI para su evaluación
+        $evaluation = $openAIService->evaluateTest($questionsAndAnswers);
+
+        // Verificar si la clave 'choices' está presente en la respuesta
+        if (isset($evaluation['choices']) && !empty($evaluation['choices'])) {
+            $feedback = $evaluation['choices'][0]['message']['content'];
+        } else {
+            // Manejar el caso de error o respuesta inesperada
+            $feedback = "Hubo un error al procesar la respuesta de OpenAI. Por favor, intenta de nuevo.";
+        }
+
+        // Procesar la respuesta para extraer la calificación y los temas a reforzar
+        $rating = '';
+        $reinforceTopics = '';
+
+        // // Buscar y extraer la calificación
+        // if (strpos($feedback, 'Calificación del test:') !== false) {
+        //     $startPos = strpos($feedback, 'Calificación del test:') + strlen('Calificación del test:');
+        //     $endPos = strpos($feedback, 'Temas a reforzar:') !== false ? strpos($feedback, 'Temas a reforzar:') : strlen($feedback);
+        //     $rating = trim(substr($feedback, $startPos, $endPos - $startPos));
+        // }
+
+        // // Buscar y extraer los temas a reforzar
+        // if (strpos($feedback, 'Temas a reforzar:') !== false) {
+        //     $startPos = strpos($feedback, 'Temas a reforzar:') + strlen('Temas a reforzar:');
+        //     $reinforceTopics = trim(substr($feedback, $startPos));
+        // }
+
+
+        // Decodificar la respuesta JSON
+        $responseData = json_decode($feedback, true);
+
+        // Obtener calificación y temas
+        $puntaje = $responseData['calificacion'];
+        $temas = $responseData['temas_refuerzo'];
+
+
+        // Mostrar la retroalimentación en una vista
+        // return view('test.results', compact('rating', 'reinforceTopics', 'feedback'));
+        return view('test.results', compact('feedback', 'puntaje', 'temas'));
+    }
+
     //     // Procesa las respuestas del test
     //     public function submit(Request $request)
     //     {

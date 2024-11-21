@@ -4,6 +4,8 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 
+use Illuminate\Support\Facades\Http;
+
 class OpenAIService
 {
     private $client;
@@ -23,19 +25,24 @@ class OpenAIService
     {
         $response = $this->client->post('chat/completions', [
             'json' => [
-                'model' => 'gpt-3.5-turbo',
+                'model' => 'gpt-3.5-turbo', // Cambia aquí el modelo
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Eres un asistente que analiza tests de programación y crea contenido educativo personalizado.',
+                        'content' => 'Por favor, evalúa las respuestas del test y devuelve la información en el siguiente formato:
+
+                            {
+                                "calificacion": "X/10",
+                                "temas_refuerzo": [
+                                    "Tema 1",
+                                    "Tema 2",
+                                    "Tema 3"
+                                ]
+                            }'
                     ],
-                    [
-                        'role' => 'user',
-                        'content' => "Califica este test: " . json_encode($questionsAndAnswers) .
-                            " y sugiere temas para reforzar en las áreas de bajo rendimiento.",
-                    ],
+
                 ],
-                'max_tokens' => 1500,
+                'max_tokens' => 100,
             ],
         ]);
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('main')
-<div class="container">
+<div style="margin-bottom: 30px;" class="container">
     <h1 class="mb-4">Test de Programación</h1>
     <form action="{{ route('test.submit') }}" method="POST">
         @csrf
@@ -14,7 +14,6 @@
             <input type="text" name="responses[{{ $index }}]" id="question{{ $index }}" class="form-control" required>
         </div>
         @endforeach
-
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 </div>
