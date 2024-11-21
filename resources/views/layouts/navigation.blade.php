@@ -16,11 +16,20 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                @role('Administrador')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('admin.show')" :active="request()->routeIs('test.show')">
+                        {{ __('Resultados') }}
+                    </x-nav-link>
+                </div>
+                @else
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('test.show')" :active="request()->routeIs('test.show')">
                         {{ __('Test') }}
                     </x-nav-link>
                 </div>
+                @endrole
+               
             </div>
 
             <!-- Settings Dropdown -->

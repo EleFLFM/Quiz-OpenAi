@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -14,14 +13,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Llama al RoleSeeder
         $this->call(RoleSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@test.com',
-            'password' => Hash::make('test'),
-        ])->assignRole('Administrador');
+        // Crea un usuario administrador
+        $admin = User::firstOrCreate(
+            ['email' => 'test@test.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('test'),
+            ]
+        );
+
+        // Asignar el rol de administrador al usuario
+        $admin->assignRole('Administrador');
     }
 }
