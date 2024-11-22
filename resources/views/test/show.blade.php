@@ -1,56 +1,48 @@
-@extends('layouts.app')
-
-@section('main')
-<div style="margin-bottom: 30px;" class="container">
-    <h1 class="mb-4">Test de Programación</h1>
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Test de Programación</h1>
     <form action="{{ route('test.submit') }}" method="POST">
         @csrf
 
         @foreach ($questions as $index => $question)
-        <div class="mb-3">
+        <div class="mb-4">
             <label for="question{{ $index }}" class="form-label">
                 {{ ($index + 1) . '. ' . $question }}
             </label>
             <input type="text" name="responses[{{ $index }}]" id="question{{ $index }}" class="form-control" required>
         </div>
         @endforeach
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-primary w-100">Enviar</button>
     </form>
 </div>
 
 <style>
+    /* Container */
     .container {
         max-width: 800px;
         margin: 40px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        font-family: 'Roboto', sans-serif;
     }
 
-    h2 {
-        color: #2c3e50;
-        margin-bottom: 30px;
+    /* Header */
+    h1 {
+        color: #333333;
+        font-size: 2.2rem;
+        margin-bottom: 20px;
         text-align: center;
-        font-weight: 600;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #eee;
+        font-weight: bold;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #007bff;
+        background: linear-gradient(90deg, #007bff, #00c6ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .form-group {
-        margin-bottom: 25px;
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 6px;
-        transition: transform 0.2s ease;
-    }
-
-    .form-group:hover {
-        transform: translateX(5px);
-        background-color: #f1f3f5;
-    }
-
-    label {
+    /* Labels */
+    .form-label {
         display: block;
         margin-bottom: 8px;
         color: #495057;
@@ -58,43 +50,63 @@
         font-size: 1.1em;
     }
 
+    /* Input Fields */
     .form-control {
         width: 100%;
         padding: 12px;
         border: 1px solid #ced4da;
-        border-radius: 4px;
+        border-radius: 6px;
         font-size: 1rem;
-        transition: border-color 0.2s ease;
+        transition: box-shadow 0.3s ease, transform 0.2s ease;
     }
 
     .form-control:focus {
-        border-color: #4dabf7;
+        border-color: #56cfe1;
         outline: none;
-        box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+        box-shadow: 0 4px 10px rgba(86, 207, 225, 0.3);
+        transform: scale(1.02);
     }
 
+    /* Button */
     .btn-primary {
         display: block;
-        width: 100%;
         max-width: 300px;
         margin: 30px auto 0;
         padding: 12px 24px;
-        background-color: #007bff;
+        background: linear-gradient(45deg, #007bff, #0056b3);
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         color: white;
         font-size: 1.1em;
-        font-weight: 500;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
         cursor: pointer;
-        transition: background-color 0.2s ease;
+        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background: linear-gradient(45deg, #0056b3, #003d80);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 91, 187, 0.4);
     }
 
     .btn-primary:active {
         transform: translateY(1px);
     }
+
+    /* Responsive Adjustments */
+    @media (max-width: 576px) {
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .btn-primary {
+            max-width: 100%;
+        }
+    }
 </style>
-@endsection

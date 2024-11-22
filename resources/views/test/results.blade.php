@@ -1,15 +1,3 @@
-@extends('layouts.app')
-@section('main')
-<div class="container">
-    <h1>Resultados del Test</h1>
-    <div class="bg-white shadow-lg rounded-lg p-8">
-        <h3>Calificación del Test:</h3>
-        <h3 class="mt-8">Temas a Reforzar:</h3>
-    </div>
-    <div class="mt-8">
-        <a href="{{ route('dashboard') }}" class="btn">Volver al Inicio</a>
-    </div>
-</div>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -24,14 +12,12 @@
             <h1>Resultados del Examen</h1>
         </div>
         <div class="detalles">
-            <p><strong>Nombre:</strong> </p>
-            <p><strong>Materia:</strong></p>
-            <p><strong>Fecha:</strong></p>
+            <p><strong>Nombre:</strong> {{ auth()->user()->name }}</p>
+
+            <p><strong>Fecha:</strong> {{ now()->format('d/m/Y') }}</p>
         </div>
         <div class="calificacion">{{ $puntaje }}</div>
-        <div class="estado-aprobacion aprobado">
-            ¡APROBADO!
-        </div>
+        <div class="estado-aprobacion {{ $puntaje >= 60 ? 'aprobado' : 'reprobado' }}"> {{ $puntaje >= 60 ? '¡APROBADO!' : 'REPROBADO' }} </div>
         <div class="temas-refuerzo">
             <h3>Temas para Refuerzo</h3>
             <ul>
@@ -40,11 +26,41 @@
                 @endforeach
             </ul>
         </div>
+        <div>
+            <div style="padding-top: 50px;" class="mt-8 text-center"> <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">Volver al Inicio</a> </div>
+
+        </div>
     </div>
 </body>
 
 </html>
 <style>
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #ffffff;
+        padding: 10px 20px;
+        font-size: 1.25rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+        /* Elimina el subrayado */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+        background-color: #004085;
+        transform: translateY(1px);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
@@ -124,4 +140,3 @@
         color: #666;
     }
 </style>
-@endsection

@@ -38,14 +38,6 @@ class TestController extends Controller
 
 
 
-    //     protected $openAi;
-
-    //     public function __construct()
-    //     {
-    //         // Inicializa la instancia del cliente de OpenAI
-    //         $client = OpenAI::client(env('OPENAI_API_KEY'));
-    //     }
-
     // Muestra la vista del test inicial
     public function show()
     {
@@ -66,6 +58,42 @@ class TestController extends Controller
         return view('test.show', compact('questions'));
     }
 
+    public function submitTest(Request $request, OpenAIService $openAIService)
+    {
+        $questions = [
+            '¿Qué es una variable?',
+            '¿Qué es un bucle for?'
+        ];
+
+        $correctAnswers = [
+            'Un contenedor para almacenar datos.',
+            'Un bucle que se ejecuta un número específico de veces.'
+        ];
+
+        // Construir el array de preguntas y respuestas
+        $questionsAndAnswers = [];
+        foreach ($questions as $index => $question) {
+            $questionsAndAnswers[] = [
+                'pregunta' => $question,
+                'respuesta_correcta' => $correctAnswers[$index],
+                'respuesta_usuario' => $request->input("responses.$index") // Capturar la respuesta del formulario
+            ];
+        }
+
+        try {
+            // Llamar al servicio para evaluar
+            $result = $openAIService->evaluateTest($questionsAndAnswers);
+
+            // Mostrar resultados en la vista
+            return view('test.result2', [
+                'calificacion' => $result['calificacion'],
+                'temas_refuerzo' => $result['temas_refuerzo']
+            ]);
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return back()->withErrors('Hubo un problema al procesar el test: ' . $e->getMessage());
+        }
+    }
 
 
     public function submit(Request $request, OpenAIService $openAIService)
@@ -94,8 +122,7 @@ class TestController extends Controller
         }
 
         // Procesar la respuesta para extraer la calificación y los temas a reforzar
-        $rating = '';
-        $reinforceTopics = '';
+
 
         // // Buscar y extraer la calificación
         // if (strpos($feedback, 'Calificación del test:') !== false) {
