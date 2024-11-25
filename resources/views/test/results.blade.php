@@ -17,7 +17,10 @@
             <p><strong>Fecha:</strong> {{ now()->format('d/m/Y') }}</p>
         </div>
         <div class="calificacion">{{ $puntaje }}</div>
-        <div class="estado-aprobacion {{ $puntaje >= 60 ? 'aprobado' : 'reprobado' }}"> {{ $puntaje >= 60 ? '¡APROBADO!' : 'REPROBADO' }} </div>
+        <div class="estado-aprobacion {{ $puntaje >= 60 ? 'aprobado' : 'reprobado' }}">
+            {{ $puntaje >= 60 ? '¡APROBADO!' : 'REPROBADO!' }}
+        </div>
+        <p><strong>Puntaje:</strong> {{ number_format($puntaje, 2) }}%</p>
         <div class="temas-refuerzo">
             <h3>Temas para Refuerzo</h3>
             <ul>

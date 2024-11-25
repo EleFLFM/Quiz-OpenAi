@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Test;
 use App\Models\Response;
+use App\Models\TestResult;
 use OpenAI\Client;
 use Exception;
 use OpenAI;
@@ -38,9 +39,6 @@ class TestController extends Controller
 
 
 
-
-
-
     // Muestra la vista del test inicial
     public function show()
     {
@@ -48,7 +46,9 @@ class TestController extends Controller
         $questions = [
             "¿Qué es una variable en programación?",
             "¿Qué diferencia hay entre una lista y un diccionario?",
-            "Explica brevemente qué es un bucle 'for'."
+            "Explica brevemente qué es un bucle 'for'.",
+            "¿Qué es la recursividad y cuándo se utiliza?",
+            "¿Cuál es la diferencia entre una función y un método?",
         ];
 
         return view('test.show', compact('questions'));
@@ -68,44 +68,6 @@ class TestController extends Controller
 
 
 
-    public function submitTest(Request $request, OpenAIService $openAIService)
-    {
-        $questions = [
-            '¿Qué es una variable?',
-            '¿Qué es un bucle for?'
-        ];
-
-        $correctAnswers = [
-            'Un contenedor para almacenar datos.',
-            'Un bucle que se ejecuta un número específico de veces.'
-        ];
-
-        // Construir el array de preguntas y respuestas
-        $questionsAndAnswers = [];
-        foreach ($questions as $index => $question) {
-            $questionsAndAnswers[] = [
-                'pregunta' => $question,
-                'respuesta_correcta' => $correctAnswers[$index],
-                'respuesta_usuario' => $request->input("responses.$index") // Capturar la respuesta del formulario
-            ];
-        }
-
-        try {
-            // Llamar al servicio para evaluar
-            $result = $openAIService->evaluateTest($questionsAndAnswers);
-
-            // Mostrar resultados en la vista
-            return view('test.result2', [
-                'calificacion' => $result['calificacion'],
-                'temas_refuerzo' => $result['temas_refuerzo']
-            ]);
-        } catch (\Exception $e) {
-            // Manejo de errores
-            return back()->withErrors('Hubo un problema al procesar el test: ' . $e->getMessage());
-        }
-    }
-
-
 
 
 
@@ -118,6 +80,9 @@ class TestController extends Controller
     {
         // Capturar las respuestas del formulario
         $responses = $request->input('responses');
+
+
+
 
         // Convertir las respuestas en un formato procesable para OpenAI
         $questionsAndAnswers = [];
@@ -146,6 +111,18 @@ class TestController extends Controller
         $puntaje = $responseData['calificacion'];
         $temas = $responseData['temas_refuerzo'];
 
+        // Extraer la calificación como porcentaje
+        $calificacion = $responseData['calificacion'] ?? '0/10';
+        [$obtenido, $total] = explode('/', $calificacion);
+        $puntaje = ($total > 0) ? ($obtenido / $total) * 100 : 0;
+
+
+        TestResult::create([
+            'user_id' => auth()->id(), // Requiere autenticación
+            'calificacion' => $calificacion,
+            'puntaje' => $puntaje,
+            'temas_refuerzo' => $responseData['temas_refuerzo'] ?? [],
+        ]);
 
         // Mostrar la retroalimentación en una vista
         return view('test.results', compact('feedback', 'puntaje', 'temas'));
