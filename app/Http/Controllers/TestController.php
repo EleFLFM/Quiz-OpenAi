@@ -117,12 +117,16 @@ class TestController extends Controller
         $puntaje = ($total > 0) ? ($obtenido / $total) * 100 : 0;
 
 
-        TestResult::create([
-            'user_id' => auth()->id(), // Requiere autenticación
-            'calificacion' => $calificacion,
-            'puntaje' => $puntaje,
-            'temas_refuerzo' => $responseData['temas_refuerzo'] ?? [],
-        ]);
+        TestResult::updateOrCreate(
+            // Condiciones para buscar un registro existente
+            ['user_id' => auth()->id()],
+            // Datos a actualizar o crear
+            [
+                'calificacion' => $calificacion,
+                'puntaje' => $puntaje,
+                'temas_refuerzo' => $responseData['temas_refuerzo'] ?? [],
+            ]
+        );
 
         // Mostrar la retroalimentación en una vista
         return view('test.results', compact('feedback', 'puntaje', 'temas'));
