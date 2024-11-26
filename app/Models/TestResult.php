@@ -19,4 +19,8 @@ class TestResult extends Model
     protected $casts = [
         'temas_refuerzo' => 'array', // Decodifica automáticamente el JSON a un array
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
