@@ -16,35 +16,23 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Ejemplo de estudiantes -->
+                @foreach ($results as $result)
                 <tr class="hover:bg-gray-100">
-                    <td class="border border-gray-300 px-4 py-2">1</td>
-                    <td class="border border-gray-300 px-4 py-2">Juan Pérez</td>
-                    <td class="border border-gray-300 px-4 py-2">juan.perez@example.com</td>
-                    <td class="border border-gray-300 px-4 py-2">85</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $result->user->name }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $result->user->email }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ $result->puntaje }}</td>
                     <td class="border border-gray-300 px-4 py-2">
+                        @if ($result->puntaje >= 60)
                         <span class="text-green-600 font-bold">Aprobado</span>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-100">
-                    <td class="border border-gray-300 px-4 py-2">2</td>
-                    <td class="border border-gray-300 px-4 py-2">Ana García</td>
-                    <td class="border border-gray-300 px-4 py-2">ana.garcia@example.com</td>
-                    <td class="border border-gray-300 px-4 py-2">60</td>
-                    <td class="border border-gray-300 px-4 py-2">
+                        @else
                         <span class="text-red-600 font-bold">Reprobado</span>
+                        @endif
                     </td>
                 </tr>
-                <tr class="hover:bg-gray-100">
-                    <td class="border border-gray-300 px-4 py-2">3</td>
-                    <td class="border border-gray-300 px-4 py-2">Luis Martínez</td>
-                    <td class="border border-gray-300 px-4 py-2">luis.martinez@example.com</td>
-                    <td class="border border-gray-300 px-4 py-2">72</td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <span class="text-green-600 font-bold">Aprobado</span>
-                    </td>
-                </tr>
+                @endforeach
             </tbody>
+
         </table>
     </div>
 </div>

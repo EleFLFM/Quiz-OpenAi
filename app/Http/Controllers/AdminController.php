@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TestResult;
+
+
+
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Show the admin dashboard or details.
-     */
     public function show()
     {
+        $results = TestResult::with('user')->get();
+
+        return view('admin.show', compact('results'));
         // Aquí puedes devolver una vista o datos específicos
-        return view('admin.show'); // Asegúrate de que exista esta vista
     }
 }

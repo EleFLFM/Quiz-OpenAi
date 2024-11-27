@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Test;
 use App\Models\Response;
+use App\Models\TestResult;
 use OpenAI\Client;
 use Exception;
 use OpenAI;
@@ -38,14 +39,6 @@ class TestController extends Controller
 
 
 
-    //     protected $openAi;
-
-    //     public function __construct()
-    //     {
-    //         // Inicializa la instancia del cliente de OpenAI
-    //         $client = OpenAI::client(env('OPENAI_API_KEY'));
-    //     }
-
     // Muestra la vista del test inicial
     public function show()
     {
@@ -56,100 +49,65 @@ class TestController extends Controller
             "Explica brevemente qué es un bucle 'for'.",
             "¿Qué es la recursividad y cuándo se utiliza?",
             "¿Cuál es la diferencia entre una función y un método?",
-            "¿Qué significa que un lenguaje de programación es 'tipado'?",
-            "Menciona las ventajas de usar programación orientada a objetos.",
-            "¿Qué es una excepción y cómo se maneja?",
-            "Describe el concepto de 'algoritmo'.",
-            "¿Qué es un framework y por qué se usa?"
         ];
 
         return view('test.show', compact('questions'));
     }
 
-    //     // Procesa las respuestas del test
-    //     public function submit(Request $request)
-    //     {
+
+    public function submit(Request $request, OpenAIService $openAIService)
+    {
+        // Capturar las respuestas del formulario
+        $responses = $request->input('responses');
 
 
-    //         // Validación de las respuestas del formulario
-    //         $validated = $request->validate([
-    //             'answers' => 'required|array|min:10', // Debe enviarse un mínimo de 10 respuestas
-    //             'answers.*' => 'required|string' // Cada respuesta debe ser una cadena de texto
-    //         ]);
 
-    //         // Crea un registro del test en la base de datos
-    //         $test = new Test;
-    //         $test->user_id = Auth::id(); // Asocia el test al usuario autenticado
-    //         $test->save();
 
-    //         // Guarda cada respuesta en la base de datos
-    //         foreach ($validated['answers'] as $question => $answer) {
-    //             $response = new Response;
-    //             $response->test_id = $test->id; // Relaciona la respuesta con el test
-    //             $response->question = $question; // Guarda la pregunta
-    //             $response->answer = $answer; // Guarda la respuesta dada
-    //             $response->save();
-    //         }
+        // Convertir las respuestas en un formato procesable para OpenAI
+        $questionsAndAnswers = [];
+        foreach ($responses as $index => $response) {
+            $questionsAndAnswers[] = [
+                'question' => "Pregunta $index",
+                'answer' => $response,
+            ];
+        }
 
-    //         // Identifica respuestas incorrectas
-    //         $incorrectAnswers = [];
-    //         foreach ($validated['answers'] as $question => $answer) {
-    //             if (!$this->isCorrectAnswer($question, $answer)) {
-    //                 $incorrectAnswers[$question] = $answer; // Guarda las respuestas incorrectas
-    //             }
-    //         }
+        // Enviar las respuestas a OpenAI para su evaluación
+        $evaluation = $openAIService->evaluateTest($questionsAndAnswers);
 
-    //         // Si no hay respuestas incorrectas, redirige con un mensaje de éxito
-    //         if (empty($incorrectAnswers)) {
-    //             return redirect()->route('test.show')
-    //                 ->with('success', 'Test enviado correctamente. No se encontraron áreas de refuerzo.');
-    //         }
+        // Verificar si la clave 'choices' está presente en la respuesta
+        if (isset($evaluation['choices']) && !empty($evaluation['choices'])) {
+            $feedback = $evaluation['choices'][0]['message']['content'];
+        } else {
+            // Manejar el caso de error o respuesta inesperada
+            $feedback = "Hubo un error al procesar la respuesta de OpenAI. Por favor, intenta de nuevo.";
+        }
 
-    //         try {
-    //             // Genera un prompt para OpenAI basado en las respuestas incorrectas
-    //             $prompt = "Dado el siguiente conjunto de preguntas y respuestas incorrectas, genera una lista de temas para reforzar:\n"
-    //                 . json_encode($incorrectAnswers);
+        // Decodificar la respuesta JSON
+        $responseData = json_decode($feedback, true);
 
-    //             // Envía las respuestas incorrectas a OpenAI
-    //             $openAiResponse = $this->openAi->completions()->create([
-    //                 'model' => 'text-davinci-003',
-    //                 'prompt' => $prompt,
-    //                 'max_tokens' => 150,
-    //             ]);
+        // Obtener calificación y temas
+        $puntaje = $responseData['calificacion'];
+        $temas = $responseData['temas_refuerzo'];
 
-    //             // Verifica si la respuesta de OpenAI contiene texto válido
-    //             if (!isset($openAiResponse['choices'][0]['text'])) {
-    //                 throw new Exception('La respuesta de la API no es válida.');
-    //             }
+        // Extraer la calificación como porcentaje
+        $calificacion = $responseData['calificacion'] ?? '0/10';
+        [$obtenido, $total] = explode('/', $calificacion);
+        $puntaje = ($total > 0) ? ($obtenido / $total) * 100 : 0;
 
-    //             // Procesa los temas generados por OpenAI
-    //             $topicsToReinforce = json_decode($openAiResponse['choices'][0]['text'], true);
 
-    //             // Guarda los temas de refuerzo en la base de datos
-    //             foreach ($topicsToReinforce as $topic) {
-    //                 $reinforcement = new ReinforcementTopic;
-    //                 $reinforcement->test_id = $test->id; // Relaciona el tema con el test
-    //                 $reinforcement->topic = $topic; // Guarda el tema generado
-    //                 $reinforcement->save();
-    //             }
-    //         } catch (Exception $e) {
-    //             // Si ocurre un error, redirige con un mensaje indicando el problema
-    //             return redirect()->route('test.show')
-    //                 ->withErrors('Hubo un problema al procesar el test: ' . $e->getMessage());
-    //         }
+        TestResult::updateOrCreate(
+            // Condiciones para buscar un registro existente
+            ['user_id' => auth()->id()],
+            // Datos a actualizar o crear
+            [
+                'calificacion' => $calificacion,
+                'puntaje' => $puntaje,
+                'temas_refuerzo' => $responseData['temas_refuerzo'] ?? [],
+            ]
+        );
 
-    //         // Redirige al usuario a una vista con los temas generados
-    //         return redirect()->route('reinforcement.show', ['id' => $test->id])
-    //             ->with('success', 'Test enviado correctamente. Los temas de refuerzo han sido generados.');
-    //     }
-
-    //     // Genera el prompt para la API de OpenAI
-    //     private function generatePrompt($answers)
-    //     {
-    //         $prompt = "Analiza las siguientes respuestas de un test de programación y genera un formulario personalizado para el nivel del estudiante:\n";
-    //         foreach ($answers as $question => $answer) {
-    //             $prompt .= "Pregunta: $question\nRespuesta: $answer\n";
-    //         }
-    //         return $prompt;
-    //     }
+        // Mostrar la retroalimentación en una vista
+        return view('test.results', compact('feedback', 'puntaje', 'temas'));
+    }
 }
