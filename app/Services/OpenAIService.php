@@ -11,15 +11,15 @@ class OpenAIService
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => config('services.openai.base_url'),
+            'base_uri' => 'https://api.openai.com/v1/',
             'headers' => [
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                'Content-Type'  => 'application/json',
+                'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+                'Content-Type' => 'application/json',
             ],
         ]);
     }
 
-    public function evaluateTest($questionsAndAnswers)
+    public function evaluateTest(array $questionsAndAnswers)
     {
         $response = $this->client->post('chat/completions', [
             'json' => [
@@ -27,15 +27,22 @@ class OpenAIService
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Eres un asistente que analiza tests de programación y crea contenido educativo personalizado.',
+                        'content' => 'Evalúa las respuestas del test y responde en este formato JSON:
+                        {
+                            "calificacion": "X/10",
+                            "temas_refuerzo": [
+                                "Tema 1",
+                                "Tema 2",
+                                "Tema 3"
+                            ]
+                        }'
                     ],
                     [
                         'role' => 'user',
-                        'content' => "Califica este test: " . json_encode($questionsAndAnswers) .
-                            " y sugiere temas para reforzar en las áreas de bajo rendimiento.",
+                        'content' => json_encode($questionsAndAnswers),
                     ],
                 ],
-                'max_tokens' => 1500,
+                'max_tokens' => 500,
             ],
         ]);
 

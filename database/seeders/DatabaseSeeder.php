@@ -16,16 +16,17 @@ class DatabaseSeeder extends Seeder
         // Llama al RoleSeeder
         $this->call(RoleSeeder::class);
 
-        // Crea un usuario administrador
-        $admin = User::firstOrCreate(
-            ['email' => 'test@test.com'],
-            [
-                'name' => 'Test User',
-                'password' => Hash::make('test'),
-            ]
-        );
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@test.com',
+            'password' => Hash::make('test'),
+        ])->assignRole('Administrador');
 
-        // Asignar el rol de administrador al usuario
-        $admin->assignRole('Administrador');
+
+        User::factory()->create([
+            'name' => 'Fray Herrera',
+            'email' => 'Fray@gmail.com',
+            'password' => Hash::make('123456789'),
+        ])->assignRole('Administrador');
     }
 }

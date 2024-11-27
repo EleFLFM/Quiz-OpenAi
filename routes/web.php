@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/admin', [AdminController::class, 'show'])->name('admin.show');
 Route::get('/test', [TestController::class, 'show'])->name('test.show');
 Route::post('/test/submit', [TestController::class, 'submit'])->name('test.submit');
 Route::post('/evaluate-test', [TestController::class, 'evaluate']);
