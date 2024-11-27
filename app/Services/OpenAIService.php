@@ -48,4 +48,29 @@ class OpenAIService
 
         return json_decode($response->getBody(), true);
     }
+
+    public function generateEducationalContent(array $topics)
+    {
+        $topicsText = implode(", ", $topics);
+
+        $response = $this->client->post('chat/completions', [
+            'json' => [
+                'model' => 'gpt-4',
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'Eres un tutor experto en programación. Proporciona contenido educativo claro y conciso sobre los siguientes temas.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => "Por favor, genera contenido educativo para los siguientes temas: {$topicsText}."
+                    ]
+                ],
+                'max_tokens' => 1000,
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+        return $responseData['choices'][0]['message']['content'] ?? 'No se pudo generar contenido educativo.';
+    }
 }

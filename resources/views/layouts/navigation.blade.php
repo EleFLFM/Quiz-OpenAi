@@ -1,114 +1,357 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+<nav class="navbar">
+    <div class="container">
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+        <div class="navbar-header">
+            <button class="navbar-toggler" data-toggle="open-navbar1">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a href="#">
+                <h4>Your<span>Logo</span></h4>
+            </a>
+        </div>
 
+        <div class="navbar-menu" id="open-navbar1">
+            <ul class="navbar-nav">
+                <x-nav-link style="color: black;" :href="route('student.educational-content')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('admin.show')" :active="request()->routeIs('test.show')">
+                    <x-nav-link style="color: black;" :href="route('admin.show')" :active="request()->routeIs('admin.show')">
                         {{ __('Resultados') }}
                     </x-nav-link>
                 </div>
                 @else
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('test.show')" :active="request()->routeIs('test.show')">
+                    <x-nav-link style="color: black;" :href="route('test.show')" :active="request()->routeIs('test.show')">
                         {{ __('Test') }}
                     </x-nav-link>
                 </div>
                 @endrole
-            </div>
+                <li class="navbar-dropdown">
+                    <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                        {{ Auth::user()->name }} <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown" id="my-dropdown-id">
+                        <li><a href="{{route('profile.edit')}}" class="nav-item">Perfil</a></li>
+                        <li><a class="nav-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Cerrar Sesión
+                            </a> </li>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Perfil') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Cerrar sesion') }}
-                            </x-dropdown-link>
                         </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
+                    </ul>
+                </li>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
+            </ul>
         </div>
     </div>
 </nav>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 0.925rem;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .container {
+        width: 1170px;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .navbar,
+    .navbar>.container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+
+        .navbar,
+        .navbar>.container {
+            display: block;
+        }
+    }
+
+    .navbar {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+        padding: 1rem 1.15rem;
+        border-bottom: 1px solid #eceef3;
+        /*
+  |-----------------------------------
+  | Start navbar logo or brand etc..
+  |-----------------------------------
+  */
+        /*
+  |-----------------------------------
+  | Start navbar menu
+  |-----------------------------------
+  */
+    }
+
+    @media (min-width: 576px) {
+        .navbar .container {
+            max-width: 540px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .navbar .container {
+            max-width: 720px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .navbar .container {
+            max-width: 960px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .navbar .container {
+            max-width: 1140px;
+        }
+    }
+
+    .navbar .navbar-header {
+        display: flex;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row-reverse;
+        }
+    }
+
+    .navbar .navbar-header .navbar-toggler {
+        cursor: pointer;
+        border: none;
+        display: none;
+        outline: none;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-header .navbar-toggler {
+            display: block;
+        }
+    }
+
+    .navbar .navbar-header .navbar-toggler span {
+        height: 2px;
+        width: 22px;
+        background-color: #929aad;
+        display: block;
+    }
+
+    .navbar .navbar-header .navbar-toggler span:not(:last-child) {
+        margin-bottom: 0.2rem;
+    }
+
+    .navbar .navbar-header>a {
+        font-weight: 500;
+        color: #3c4250;
+    }
+
+    .navbar .navbar-menu {
+        display: flex;
+        align-items: center;
+        flex-basis: auto;
+        flex-grow: 1;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-menu {
+            display: none;
+            text-align: center;
+        }
+    }
+
+    .navbar .navbar-menu.active {
+        display: flex !important;
+    }
+
+    .navbar .navbar-menu .navbar-nav {
+        margin-left: auto;
+        flex-direction: row;
+        display: flex;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-menu .navbar-nav {
+            width: 100%;
+            display: block;
+            border-top: 1px solid #EEE;
+            margin-top: 1rem;
+        }
+    }
+
+    .navbar .navbar-menu .navbar-nav>li>a {
+        color: #3c4250;
+        text-decoration: none;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar .navbar-menu .navbar-nav>li>a:hover {
+        color: #66f;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-menu .navbar-nav>li>a {
+            border-bottom: 1px solid #eceef3;
+        }
+    }
+
+    .navbar .navbar-menu .navbar-nav>li.active a {
+        color: #66f;
+    }
+
+    .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
+        list-style: none;
+        position: absolute;
+        top: 150%;
+        left: 0;
+        background-color: #fff;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        min-width: 160px;
+        width: auto;
+        white-space: nowrap;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        z-index: 99999;
+        border-radius: 0.75rem;
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown {
+            position: relative;
+            box-shadow: none;
+        }
+    }
+
+    .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown li a {
+        color: #3c4250;
+        padding: 0.25rem 1rem;
+        display: block;
+    }
+
+    .navbar .navbar-menu .navbar-nav .navbar-dropdown .dropdown.show {
+        display: block !important;
+    }
+
+    .navbar .navbar-menu .navbar-nav .dropdown>.separator {
+        height: 1px;
+        width: 100%;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        background-color: #eceef3;
+    }
+
+    .navbar .navbar-dropdown {
+        position: relative;
+    }
+
+    .navbar .navbar-header>a span {
+        color: #66f;
+    }
+
+    .navbar .navbar-header h4 {
+        font-weight: 500;
+        font-size: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .navbar .navbar-header h4 {
+            font-size: 1.05rem;
+        }
+    }
+</style>
+<script>
+    let dropdowns = document.querySelectorAll('.navbar .dropdown-toggler')
+    let dropdownIsOpen = false
+
+    // Handle dropdown menues
+    if (dropdowns.length) {
+        dropdowns.forEach((dropdown) => {
+            dropdown.addEventListener('click', (event) => {
+                let target = document.querySelector(`#${event.target.dataset.dropdown}`)
+
+                if (target) {
+                    if (target.classList.contains('show')) {
+                        target.classList.remove('show')
+                        dropdownIsOpen = false
+                    } else {
+                        target.classList.add('show')
+                        dropdownIsOpen = true
+                    }
+                }
+            })
+        })
+    }
+
+    // Handle closing dropdowns if a user clicked the body
+    window.addEventListener('mouseup', (event) => {
+        if (dropdownIsOpen) {
+            dropdowns.forEach((dropdownButton) => {
+                let dropdown = document.querySelector(`#${dropdownButton.dataset.dropdown}`)
+                let targetIsDropdown = dropdown == event.target
+
+                if (dropdownButton == event.target) {
+                    return
+                }
+
+                if ((!targetIsDropdown) && (!dropdown.contains(event.target))) {
+                    dropdown.classList.remove('show')
+                }
+            })
+        }
+    })
+
+    function handleSmallScreens() {
+        document.querySelector('.navbar-toggler')
+            .addEventListener('click', () => {
+                let navbarMenu = document.querySelector('.navbar-menu')
+
+                if (!navbarMenu.classList.contains('active')) {
+                    navbarMenu.classList.add('active')
+                } else {
+                    navbarMenu.classList.remove('active')
+                }
+            })
+    }
+
+    handleSmallScreens()
+</script>

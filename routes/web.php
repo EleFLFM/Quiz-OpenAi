@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\educationalContent;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
@@ -50,3 +51,7 @@ Route::get('/prueba', function (OpenAIService $openAIService) {
     // Devuelve la respuesta para inspeccionarla
     return response()->json($response);
 });
+
+Route::get('/student/educational-content', [educationalContent::class, 'educationalContent'])
+    ->name('student.educational-content')
+    ->middleware('auth');
