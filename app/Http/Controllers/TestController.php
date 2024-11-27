@@ -55,27 +55,6 @@ class TestController extends Controller
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function submit(Request $request, OpenAIService $openAIService)
     {
         // Capturar las respuestas del formulario
