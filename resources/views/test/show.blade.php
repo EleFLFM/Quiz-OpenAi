@@ -1,14 +1,8 @@
 @extends('layouts.app')
 
 @section('main')
-{{-- <div class="p-6 text-gray-900 dark:text-gray-100">
-    @role('Administrador')
-    <p>Este contenido solo es visible para los administradores.</p>
-    @else
-    <p>No tienes permisos para ver este contenido.</p>
-    @endrole
-</div> --}}
-<div class="container">
+
+<div style="width: 800px;" class="container">
     <h1 class="mb-4">Test de Programación</h1>
     <form action="{{ route('test.submit') }}" method="POST">
         @csrf

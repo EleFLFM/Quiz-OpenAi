@@ -66,7 +66,7 @@ class OpenAIService
                         'content' => "Por favor, genera contenido educativo para los siguientes temas: {$topicsText}."
                     ]
                 ],
-                'max_tokens' => 1000,
+                'max_tokens' => 10,
             ],
         ]);
 
