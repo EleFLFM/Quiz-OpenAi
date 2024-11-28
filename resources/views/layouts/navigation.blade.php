@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <div class="container">
+    <div style="padding: 0;" class="container">
 
         <div class="navbar-header">
             <button class="navbar-toggler" data-toggle="open-navbar1">
@@ -7,8 +7,8 @@
                 <span></span>
                 <span></span>
             </button>
-            <a href="#">
-                <h4>Your<span>Logo</span></h4>
+            <a href="{{route('dashboard')}}">
+                <img width="100px" src="/img/logo.png" alt="">
             </a>
         </div>
 
@@ -46,7 +46,7 @@
                 @endrole
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <li class="navbar-dropdown">
-                        <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                        <a style="margin-right: 20px;" href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
                             {{ Auth::user()->name }} <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown" id="my-dropdown-id">
@@ -74,10 +74,7 @@
         margin: 0;
     }
 
-    body {
-        font-family: "Roboto", sans-serif;
-        font-size: 0.925rem;
-    }
+
 
     a {
         text-decoration: none;
