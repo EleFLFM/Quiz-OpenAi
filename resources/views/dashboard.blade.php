@@ -7,7 +7,7 @@
     <p>
         Estamos encantados de que estés aquí. Este es un espacio diseñado para ayudarte a mejorar tus habilidades y aprender de manera personalizada.
     </p>
-    <a href="{{ route('student.educational-content') }}" class="btn-primary btn-center">Explorar Contenido Educativo</a>
+    <a href="{{ route('test.show') }}" class="btn-primary btn-center">Elaborar Test</a>
 </div>
 
 
@@ -157,13 +157,4 @@
     }
 
     /* Responsive Adjustments */
-    @media (max-width: 576px) {
-        h1 {
-            font-size: 2rem;
-        }
-
-        p {
-            font-size: 1rem;
-        }
-    }
 </style>

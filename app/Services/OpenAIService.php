@@ -27,13 +27,14 @@ class OpenAIService
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Evalúa las respuestas del test y responde en este formato JSON:
+                        'content' => 'Evalúa las respuestas del test y responde en este formato JSON, los temas de refuerzo son respecto a la programcion:
                         {
                             "calificacion": "X/10",
                             "temas_refuerzo": [
                                 "Tema 1",
                                 "Tema 2",
-                                "Tema 3"
+                                "Tema 3",
+                                "etc"
                             ]
                         }'
                     ],
@@ -66,7 +67,7 @@ class OpenAIService
                         'content' => "Por favor, genera contenido educativo para los siguientes temas: {$topicsText}."
                     ]
                 ],
-                'max_tokens' => 10,
+                'max_tokens' => 500,
             ],
         ]);
 
