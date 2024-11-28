@@ -5,16 +5,16 @@ use App\Http\Controllers\educationalContent;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
-
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('login.index');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+    
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -26,7 +26,7 @@ Route::get('/test', [TestController::class, 'show'])->name('test.show');
 Route::post('/test/submit', [TestController::class, 'submit'])->name('test.submit');
 Route::post('/evaluate-test', [TestController::class, 'evaluate']);
 
-Route::get('/admin', [AdminController::class, 'show'])->name('admin.show');
+
 
 require __DIR__ . '/auth.php';
 
