@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\OpenAIService;
 use App\Models\TestResult;
 
-use Illuminate\Http\Request;
-
 class educationalContent extends Controller
 {
     public function educationalContent(OpenAIService $openAIService)
@@ -17,7 +15,7 @@ class educationalContent extends Controller
         $testResult = TestResult::where('user_id', $userId)->latest()->first();
 
         if (!$testResult) {
-            return redirect()->route('test.index')->with('error', 'No tienes resultados de test aún.');
+            return redirect()->route('dashboard')->with('error', 'No tienes resultados de test aún.');
         }
 
         // Temas de refuerzo del test

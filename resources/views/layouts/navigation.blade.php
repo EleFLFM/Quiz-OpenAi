@@ -14,9 +14,23 @@
 
         <div class="navbar-menu" id="open-navbar1">
             <ul class="navbar-nav">
-                <x-nav-link style="color: black;" :href="route('student.educational-content')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+                <x-nav-link style="color: black;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Inicio') }}
                 </x-nav-link>
+                @role('Administrador')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link style="color: black;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                </div>
+                @else
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link style="color: black;" :href="route('student.educational-content')" :active="request()->routeIs('student.educational-content')">
+                        {{ __('Contenido Educativo') }}
+                    </x-nav-link>
+                </div>
+                @endrole
+
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link style="color: black;" :href="route('admin.show')" :active="request()->routeIs('admin.show')">
@@ -30,24 +44,23 @@
                     </x-nav-link>
                 </div>
                 @endrole
-                <li class="navbar-dropdown">
-                    <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
-                        {{ Auth::user()->name }} <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown" id="my-dropdown-id">
-                        <li><a href="{{route('profile.edit')}}" class="nav-item">Perfil</a></li>
-                        <li><a class="nav-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Cerrar Sesión
-                            </a> </li>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <li class="navbar-dropdown">
+                        <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                            {{ Auth::user()->name }} <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown" id="my-dropdown-id">
+                            <li><a href="{{route('profile.edit')}}" class="nav-item">Perfil</a></li>
+                            <li><a class="nav-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Cerrar Sesión
+                                </a> </li>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </ul>
-                </li>
-
-
-
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </ul>
+                    </li>
+                </div>
             </ul>
         </div>
     </div>
@@ -97,8 +110,7 @@
     }
 
     .navbar {
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        background-color: #fff;
+
         padding: 1rem 1.15rem;
         border-bottom: 1px solid #eceef3;
         /*
