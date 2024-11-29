@@ -2,13 +2,7 @@
 
 @section('main')
 @role('usuario')
-<div class="welcome-content">
-    <h1>Bienvenido, {{ auth()->user()->name ?? 'Estudiante' }}!</h1>
-    <p>
-        Estamos encantados de que estés aquí. Este es un espacio diseñado para ayudarte a mejorar tus habilidades y aprender de manera personalizada.
-    </p>
-    <a href="{{ route('test.show') }}" class="btn-primary btn-center">Elaborar Test</a>
-</div>
+
 @endrole
 
 @role('Administrador')
@@ -51,6 +45,14 @@
             </div>
         </div>
     </div>
+</div>
+@else
+<div class="welcome-content">
+    <h1>Bienvenido, {{ auth()->user()->name ?? 'Estudiante' }}!</h1>
+    <p>
+        Estamos encantados de que estés aquí. Este es un espacio diseñado para ayudarte a mejorar tus habilidades y aprender de manera personalizada.
+    </p>
+    <a href="{{ route('test.show') }}" class="btn-primary btn-center">Elaborar Test</a>
 </div>
 @endrole
 
