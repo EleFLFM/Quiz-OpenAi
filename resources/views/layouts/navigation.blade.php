@@ -14,9 +14,7 @@
 
         <div class="navbar-menu" id="open-navbar1">
             <ul class="navbar-nav">
-                <x-nav-link style="color: black;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Inicio') }}
-                </x-nav-link>
+
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link style="color: black;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -24,6 +22,9 @@
                     </x-nav-link>
                 </div>
                 @else
+                <x-nav-link style="color: black;" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Inicio') }}
+                </x-nav-link>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link style="color: black;" :href="route('student.educational-content')" :active="request()->routeIs('student.educational-content')">
                         {{ __('Contenido Educativo') }}
