@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('main')
-@role('usuario')
-
-@endrole
 
 @role('Administrador')
-<div class="welcome-content">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div style="margin-bottom: 50px;" class="welcome-content">
 
     <div class="admin-dashboard">
         <center>
@@ -60,7 +59,6 @@
 </div>
 @endrole
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Gráfica de Resultados de Pruebas
     const testResultsCtx = document.getElementById('testResultsChart').getContext('2d');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('main')
 
-<div class="container">
+<div style="margin-bottom: 50px;" class="container">
     <h1>Contenido Educativo Personalizado</h1>
     <div class="topics">
         <h3>Temas de Refuerzo:</h3>
