@@ -14,6 +14,7 @@
 
         <div class="navbar-menu" id="open-navbar1">
             <ul class="navbar-nav">
+<<<<<<< HEAD
 
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -34,6 +35,13 @@
 
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+=======
+                <x-nav-link style="color: black;" :href="route('student.educational-content')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+                @role('Administrador')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+>>>>>>> parent of 7d631dc (muchas cosas)
                     <x-nav-link style="color: black;" :href="route('admin.show')" :active="request()->routeIs('admin.show')">
                         {{ __('Resultados') }}
                     </x-nav-link>
@@ -45,6 +53,7 @@
                     </x-nav-link>
                 </div>
                 @endrole
+<<<<<<< HEAD
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <li class="navbar-dropdown">
                         <a style="margin-right: 20px;" href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
@@ -55,13 +64,26 @@
                             <li><a class="nav-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Cerrar Sesión
                                 </a> </li>
+=======
+                <li class="navbar-dropdown">
+                    <a href="#" class="dropdown-toggler" data-dropdown="my-dropdown-id">
+                        {{ Auth::user()->name }} <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown" id="my-dropdown-id">
+                        <li><a href="{{route('profile.edit')}}" class="nav-item">Perfil</a></li>
+                        <li><a class="nav-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Cerrar Sesión
+                            </a> </li>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </ul>
-                    </li>
-                </div>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </ul>
+                </li>
+
+
+>>>>>>> parent of 7d631dc (muchas cosas)
+
             </ul>
         </div>
     </div>
@@ -108,7 +130,8 @@
     }
 
     .navbar {
-
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        background-color: #fff;
         padding: 1rem 1.15rem;
         border-bottom: 1px solid #eceef3;
         /*

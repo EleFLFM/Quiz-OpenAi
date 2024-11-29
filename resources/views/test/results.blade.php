@@ -30,7 +30,7 @@
             </ul>
         </div>
         <div>
-            <div style="padding-top: 50px;" class="mt-8 text-center"> <a href="{{ route('student.educational-content') }}" class="btn btn-primary btn-lg">Volver al Inicio</a> </div>
+            <div style="padding-top: 50px;" class="mt-8 text-center"> <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">Volver al Inicio</a> </div>
 
         </div>
     </div>

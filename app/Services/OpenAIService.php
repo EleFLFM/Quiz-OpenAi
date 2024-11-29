@@ -67,7 +67,11 @@ class OpenAIService
                         'content' => "Por favor, genera contenido educativo para los siguientes temas: {$topicsText}."
                     ]
                 ],
+<<<<<<< HEAD
                 'max_tokens' => 5,
+=======
+                'max_tokens' => 1000,
+>>>>>>> parent of 7d631dc (muchas cosas)
             ],
         ]);
 
