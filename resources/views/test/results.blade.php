@@ -20,7 +20,6 @@
         <div class="estado-aprobacion {{ $puntaje >= 60 ? 'aprobado' : 'reprobado' }}">
             {{ $puntaje >= 60 ? '¡APROBADO!' : 'REPROBADO!' }}
         </div>
-        <p><strong>Puntaje:</strong> {{ number_format($puntaje, 2) }}%</p>
         <div class="temas-refuerzo">
             <h3>Temas para Refuerzo</h3>
             <ul>
@@ -30,7 +29,11 @@
             </ul>
         </div>
         <div>
+<<<<<<< HEAD
             <div style="padding-top: 50px;" class="mt-8 text-center"> <a href="{{ route('dashboard') }}" class="btn btn-primary btn-lg">Volver al Inicio</a> </div>
+=======
+            <div style="padding-top: 50px;" class="mt-8 text-center"> <a href="{{ route('student.educational-content') }}" class="btn btn-primary btn-lg">Ver contenido personalizado</a> </div>
+>>>>>>> d08015db09a65d3768ade573ca37f73cd2ad964b
 
         </div>
     </div>

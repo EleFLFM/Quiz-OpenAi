@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'STIPE') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,7 +17,10 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-900">
+    <div style="  background: background-color: #0093E9;
+background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+
+" class="min-h-screen bg-gray-100 dark:bg-900">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -30,7 +33,7 @@
         @endisset
 
         <!-- Page Content -->
-        <div class="main-content"> <!-- Contenido principal -->
+        <div style="height: 100%;" class="main-content"> <!-- Contenido principal -->
             @yield('main') <!-- Aquí se insertará el contenido de la vista -->
         </div>
     </div>

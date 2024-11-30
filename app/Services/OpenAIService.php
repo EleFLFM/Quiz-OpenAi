@@ -33,8 +33,8 @@ class OpenAIService
                             "temas_refuerzo": [
                                 "Tema 1",
                                 "Tema 2",
-                                "Tema 3",
-                                "etc"
+                                "Tema 3"
+                            
                             ]
                         }'
                     ],
@@ -68,10 +68,14 @@ class OpenAIService
                     ]
                 ],
 <<<<<<< HEAD
+<<<<<<< HEAD
                 'max_tokens' => 5,
 =======
                 'max_tokens' => 1000,
 >>>>>>> parent of 7d631dc (muchas cosas)
+=======
+                'max_tokens' => 500,
+>>>>>>> d08015db09a65d3768ade573ca37f73cd2ad964b
             ],
         ]);
 

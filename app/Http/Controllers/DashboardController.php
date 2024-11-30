@@ -11,7 +11,14 @@ class DashboardController extends Controller
     public function index()
     {
         // Estadísticas
+<<<<<<< HEAD
         $totalUsuarios = User::role('usuario')->count(); // Usuarios con rol 'usuario'
+=======
+        $totalUsuarios = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'administrador');
+        })->count();
+        // $totalUsuarios = User::role('usuario')->count(); // Usuarios con rol 'usuario'
+>>>>>>> d08015db09a65d3768ade573ca37f73cd2ad964b
         $totalPruebas = TestResult::count(); // Total de pruebas realizadas
         $promedioPuntajes = TestResult::avg('puntaje'); // Promedio de puntajes
         $aprobados = TestResult::where('puntaje', '>=', 60)->count(); // Pruebas aprobadas

@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -13,20 +12,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Llama al RoleSeeder
+        // Llama al RoleSeeder para crear los roles
         $this->call(RoleSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
+        // Crear un único usuario administrador
+        $admin = User::factory()->create([
+            'name' => 'test',
             'email' => 'test@test.com',
-            'password' => Hash::make('test'),
-        ])->assignRole('Administrador');
+            'password' => Hash::make('test'),  // Cambia la contraseña a algo seguro
+        ]);
+        $admin->assignRole('Administrador');
 
+        // Crear varios usuarios estudiantes
+        User::factory(10)->create()->each(function ($user) {
+            $user->assignRole('usuario');
+        });
+        $this->call(TestResultsTableSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Fray Herrera',
-            'email' => 'Fray@gmail.com',
-            'password' => Hash::make('123456789'),
-        ])->assignRole('Administrador');
     }
 }

@@ -1,4 +1,6 @@
-<nav class="navbar">
+<nav style="
+    border-bottom-width: 0px;
+" class="navbar">
     <div style="padding: 0;" class="container">
 
         <div class="navbar-header">
@@ -15,6 +17,9 @@
         <div class="navbar-menu" id="open-navbar1">
             <ul class="navbar-nav">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d08015db09a65d3768ade573ca37f73cd2ad964b
 
                 @role('Administrador')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
