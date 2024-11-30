@@ -65,10 +65,6 @@
                 <div class="text-red-500 mt-2 text-sm">{{ $message }}</div>
                 @enderror
 
-                <!-- Enlace para Olvidó su contraseña -->
-                @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}">Olvidó su contraseña?</a>
-                @endif
 
                 <!-- Botón de Iniciar sesión -->
                 <button type="submit">Iniciar sesión</button>

@@ -33,8 +33,8 @@ class OpenAIService
                             "temas_refuerzo": [
                                 "Tema 1",
                                 "Tema 2",
-                                "Tema 3",
-                                "etc"
+                                "Tema 3"
+                            
                             ]
                         }'
                     ],
@@ -67,7 +67,7 @@ class OpenAIService
                         'content' => "Por favor, genera contenido educativo para los siguientes temas: {$topicsText}."
                     ]
                 ],
-                'max_tokens' => 10,
+                'max_tokens' => 500,
             ],
         ]);
 

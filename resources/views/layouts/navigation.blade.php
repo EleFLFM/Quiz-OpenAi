@@ -1,4 +1,6 @@
-<nav class="navbar">
+<nav style="
+    border-bottom-width: 0px;
+" class="navbar">
     <div style="padding: 0;" class="container">
 
         <div class="navbar-header">

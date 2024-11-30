@@ -13,7 +13,7 @@
         </center>
 
         <div class="stats-grid">
-            <div class="stat-card">
+            <div style="background-color: #DDE3FC;" class="stat-card">
                 <div class="stat-icon"><i class="fas fa-users"></i></div>
                 <div class="stat-content">
                     <h3>Usuarios Registrados</h3>
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="stat-card">
+            <div style="background-color: #DDE3FC;" class="stat-card">
                 <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                 <div class="stat-content">
                     <h3>Pruebas Realizadas</h3>
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="stat-card">
+            <div style="background-color: #DDE3FC;" class="stat-card">
                 <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
                 <div class="stat-content">
                     <h3>Promedio de Puntajes</h3>
@@ -39,10 +39,19 @@
         </div>
 
         <div class="charts-container">
-            <div class="chart-card chart-small">
-                <h3>Pruebas: Aprobados vs Reprobados</h3>
-                <div class="chart-wrapper">
-                    <canvas id="testResultsChart"></canvas>
+
+            <div style="margin-right: 30px ; background-color: #14EC4B;" class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-content">
+                    <h3 style="color: white;">Porcentaje Aprobados</h3>
+                    <p style="color: white;" class="stat-number">{{ number_format($porcentajeAprobados, 0) }}%</p>
+                </div>
+            </div>
+            <div style="background-color: red ;" class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-content">
+                    <h3 style="color: white;">Porcentaje Reprobados</h3>
+                    <p style="color: white;" class="stat-number">{{ number_format($porcentajeReprobados, 0) }}%</p>
                 </div>
             </div>
         </div>
@@ -50,6 +59,17 @@
 
 </div>
 @else
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'No tienes resultados de test aún',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+@endif
 <div class="welcome-content">
     <h1>Bienvenido, {{ auth()->user()->name ?? 'Estudiante' }}!</h1>
     <p>
@@ -68,7 +88,15 @@
         data: {
             labels: ['Aprobados', 'Reprobados'],
             datasets: [{
-                data: [{{ $porcentajeAprobados }}, {{ $porcentajeReprobados }}],
+                data: [{
+                    {
+                        $porcentajeAprobados
+                    }
+                }, {
+                    {
+                        $porcentajeReprobados
+                    }
+                }],
                 backgroundColor: ['#28a745', '#dc3545']
             }]
         },
@@ -83,7 +111,11 @@
                     callbacks: {
                         label: function(context) {
                             let value = context.parsed;
-                            return `${context.label}: ${value.toFixed(2)}%`;
+                            return $ {
+                                context.label
+                            }: $ {
+                                value.toFixed(2)
+                            } % ;
                         }
                     }
                 }
